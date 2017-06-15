@@ -13,10 +13,15 @@
     <script type="text/javascript" src="js/index.js"></script>
   </head>
   <body>
-    <div><a href="views/addPage.jsp">新增</a></div>
     <div>
-      <table id="myTable"></table>
-    </div>
+      <a href="views/addPage.jsp">新增</a>
 
+    </div>
+    <div>
+      <table id="myTable"border="1">
+
+      </table>
+    </div>
+  <div id="pageDiv"></div>
   </body>
 </html>
