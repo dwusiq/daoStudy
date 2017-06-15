@@ -15,8 +15,9 @@
   <body>
     <div>
       <a href="views/addPage.jsp">新增</a>
-
+      <a href="views/delPage.jsp">删除</a>
     </div>
+    <hr style="height: 2px;">
     <div>
       <table id="myTable"border="1">
 

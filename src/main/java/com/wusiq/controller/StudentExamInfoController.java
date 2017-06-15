@@ -1,6 +1,7 @@
 package com.wusiq.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.wusiq.base.Constants.ErrConstants;
 import com.wusiq.base.baseEntity.BasePageResponseEntity;
 import com.wusiq.base.baseEntity.BaseResponseEntity;
 import com.wusiq.dao.DaoFactory;
@@ -36,7 +37,10 @@ public class StudentExamInfoController extends HttpServlet{
           addStudentExamInfo(req, resp);
         }
         if("queryList".equals(doSomething)){
-             queryList(req, resp);
+            queryList(req, resp);
+        }
+        if("del".equals(doSomething)){
+            delStudentExamInfo(req, resp);
         }
     }
 
@@ -44,9 +48,6 @@ public class StudentExamInfoController extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doGet(req, resp);
     }
-
-
-
 
     /**
      * 添加学生成绩信息
@@ -113,12 +114,38 @@ public class StudentExamInfoController extends HttpServlet{
         try{
             json = JSON.toJSONString(bre);
         }catch(Exception ex){
-            LOGGER.error("查询学生成绩信息列表失败",ex);
+            LOGGER.error("删除学生成绩信息失败",ex);
         }
 
-        LOGGER.info("查询学生成绩信息列表结束.返回参{}...",json);
+        LOGGER.info("删除学生成绩信息结束.返回参{}...",json);
         writeInfo(resp,json);
     }
+
+    /*删除学生成绩信息*/
+    public void delStudentExamInfo(HttpServletRequest req, HttpServletResponse resp){
+        LOGGER.info("删除学生成绩信息开始...");
+        BaseResponseEntity bre = new BaseResponseEntity(0);
+        String studentIdStr = req.getParameter("studentId");
+        int studentId = 0;
+        if(StringUtils.isNotEmpty(studentIdStr)){
+            studentId = Integer.valueOf(studentIdStr);
+        }
+        boolean delResult = DaoFactory.getStudentExamInfoDaoImpl(DbConnFactory.getMysqlDbC().getConn()).delExamInfo(studentId);
+        if(!delResult){
+            bre = new BaseResponseEntity(ErrConstants.DEL_STUDENT_EXAM_INFO_FAIL);
+        }
+
+        String json = null;
+        try{
+            json = JSON.toJSONString(bre);
+        }catch(Exception ex){
+            LOGGER.error("删除学生成绩信息失败",ex);
+        }
+
+        LOGGER.info("删除学生成绩信息结束.返回参{}...",json);
+        writeInfo(resp,json);
+    }
+
     private void writeInfo(HttpServletResponse resp,String Msg){
         try {
             resp.setCharacterEncoding("UTF-8");

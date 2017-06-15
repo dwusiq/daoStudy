@@ -32,7 +32,7 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
     @Override
     public boolean addExamInfo(StudentExamInfo sei) {
         LOGGER.info("插入学生成绩信息到数据库开始...");
-        boolean result = false;
+        boolean result = true;
         String sql = "insert into student_exam_info(studentName,studentClass,studentScore,subjectsName)values('%1s','%2s',%3s,'%4s')";
         String sql_format = String.format(sql, sei.getStudentName(),sei.getStudentClass(),sei.getStudentScore(),sei.getSubjectsName());
         LOGGER.info("插入学生成绩信息到数据库sql:{}",sql_format);
@@ -40,10 +40,9 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
             ps = conn.prepareStatement(sql_format);
             int i = ps.executeUpdate();
             if (i!=1){
-                LOGGER.warn("修改用户信息受影响记录数为[%1]",i);
-                return result;
+                LOGGER.warn("修改用户信息受影响记录数为[{}]",i);
+                result = false;
             }
-            result = true;
         } catch (SQLException e) {
             LOGGER.error("插入学生成绩信息到数据库失败",e);
         }
@@ -57,7 +56,7 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
     @Override
     public boolean delExamInfo(int studentId) {
         LOGGER.info("删除学生成绩信息开始...");
-        boolean result = false;
+        boolean result = true;
         String sql = "delete from student_exam_info where studentId=%1s";
         String sql_format = String.format(sql,studentId);
         LOGGER.info("删除学生成绩信息sql:{}",sql_format);
@@ -65,9 +64,9 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
             ps = conn.prepareStatement(sql_format);
             int i =  ps.executeUpdate();
             if (i!=1){
-                LOGGER.warn("删除学生成绩信息受影响记录数为[%1]",i);
+                LOGGER.warn("删除学生成绩信息受影响记录数为[{}]",i);
+                result = false;
             }
-            result = true;
         } catch (SQLException e) {
             LOGGER.error("从数据库中删除学生成绩信息失败",e);
         }
@@ -81,17 +80,17 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
     @Override
     public boolean updateExamInfo(StudentExamInfo sei) {
         LOGGER.info("修改学生成绩信息开始...");
-        boolean result = false;
+        boolean result = true;
         String sql = "update student_exam_info set studentName='%1s',studentClass='%2s',studentScore=%3s,subjectsName='%4s' where studentId='%5s'";
         String sql_format = String.format(sql,sei.getStudentName(),sei.getStudentClass(),sei.getStudentScore(),sei.getSubjectsName(),sei.getStudentId());
-        LOGGER.info("删除学生成绩信息sql:{}",sql_format);
+        LOGGER.info("修改学生成绩信息sql:{}",sql_format);
         try {
             ps = conn.prepareStatement(sql_format);
             int i = ps.executeUpdate();
             if (i!=1){
-                LOGGER.warn("修改用户信息受影响记录数为[%1]",i);
+                LOGGER.warn("修改用户信息受影响记录数为[{}]",i);
+                result = false;
             }
-            result = true;
         } catch (SQLException e) {
             LOGGER.error("修改学生成绩信息失败",e);
             return result;

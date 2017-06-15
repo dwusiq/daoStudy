@@ -14,6 +14,7 @@
 <div>
     <a href="../index.jsp">返回首页</a>
 </div>
+<hr style="height: 2px;">
 <div>
     <form action="../StudentExamInfoManage.do" method="get">
         <table border="1">
