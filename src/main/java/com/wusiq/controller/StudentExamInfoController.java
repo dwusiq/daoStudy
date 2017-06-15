@@ -42,6 +42,13 @@ public class StudentExamInfoController extends HttpServlet{
         if("del".equals(doSomething)){
             delStudentExamInfo(req, resp);
         }
+        if("queryInfo".equals(doSomething)){
+            queryInfo(req, resp);
+        }
+        if("updateInfo".equals(doSomething)){
+            updateInfo(req, resp);
+        }
+
     }
 
     @Override
@@ -143,6 +150,74 @@ public class StudentExamInfoController extends HttpServlet{
         }
 
         LOGGER.info("删除学生成绩信息结束.返回参{}...",json);
+        writeInfo(resp,json);
+    }
+
+    /*查询学生成绩信息*/
+    public void queryInfo(HttpServletRequest req, HttpServletResponse resp){
+        LOGGER.info("查询学生成绩信息开始...");
+        BaseResponseEntity bre = new BaseResponseEntity(0);
+        String studentIdStr = req.getParameter("studentId");
+        int studentId = 0;
+        if(StringUtils.isNotEmpty(studentIdStr)){
+            studentId = Integer.valueOf(studentIdStr);
+        }
+        StudentExamInfo sei = DaoFactory.getStudentExamInfoDaoImpl(DbConnFactory.getMysqlDbC().getConn()).queryById(studentId);
+        if(sei != null){
+            bre.setData(sei);
+        }else {
+            bre = new BaseResponseEntity(ErrConstants.QUERY_STUDENT_EXAM_INFO_FAIL);
+        }
+
+        String json = null;
+        try{
+            json = JSON.toJSONString(bre);
+        }catch(Exception ex){
+            LOGGER.error("查询学生成绩信息失败",ex);
+        }
+
+        LOGGER.info("查询学生成绩信息结束.返回参{}...",json);
+        writeInfo(resp,json);
+    }
+
+    /**
+     * 修改学生成绩信息
+     */
+    public void updateInfo(HttpServletRequest request, HttpServletResponse resp){
+        LOGGER.info("修改学生成绩信息.开始");
+        //返回参数实体类
+        BaseResponseEntity bre = new BaseResponseEntity(0);
+        String studentIdStr = request.getParameter("studentId");
+        String studentName = request.getParameter("studentName");
+        String studentClass = request.getParameter("studentClass");
+        String subjectsName = request.getParameter("subjectsName");
+        String studentScoreStr = request.getParameter("studentScore");
+
+        StudentExamInfo sei = new StudentExamInfo();
+        sei.setStudentName(studentName);
+        sei.setStudentClass(studentClass);
+        sei.setSubjectsName(subjectsName);
+        if(StringUtils.isNotEmpty(studentScoreStr)){
+            sei.setStudentScore(Integer.valueOf(studentScoreStr));
+        }
+        if(StringUtils.isNotEmpty(studentIdStr)){
+            sei.setStudentId(Integer.valueOf(studentIdStr));
+        }
+        //修改学生成绩信息
+        boolean addResult = DaoFactory.getStudentExamInfoDaoImpl(DbConnFactory.getMysqlDbC().getConn()).updateExamInfo(sei);
+
+        if(!addResult){
+            bre = new BaseResponseEntity(ErrConstants.UPDATE_STUDENT_EXAM_INFO_FAIL);
+        }
+
+        String json = null;
+        try{
+            json = JSON.toJSONString(bre);
+        }catch(Exception ex){
+            LOGGER.error("修改学生成绩信息失败",ex);
+        }
+
+        LOGGER.info("修改学生成绩信息.返回参{}...",json);
         writeInfo(resp,json);
     }
 

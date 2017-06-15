@@ -31,22 +31,22 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
      */
     @Override
     public boolean addExamInfo(StudentExamInfo sei) {
-        LOGGER.info("插入学生成绩信息到数据库开始...");
+        LOGGER.info("service插入学生成绩信息到数据库开始...");
         boolean result = true;
         String sql = "insert into student_exam_info(studentName,studentClass,studentScore,subjectsName)values('%1s','%2s',%3s,'%4s')";
         String sql_format = String.format(sql, sei.getStudentName(),sei.getStudentClass(),sei.getStudentScore(),sei.getSubjectsName());
-        LOGGER.info("插入学生成绩信息到数据库sql:{}",sql_format);
+        LOGGER.info("service插入学生成绩信息到数据库sql:{}",sql_format);
         try {
             ps = conn.prepareStatement(sql_format);
             int i = ps.executeUpdate();
             if (i!=1){
-                LOGGER.warn("修改用户信息受影响记录数为[{}]",i);
+                LOGGER.warn("service修改用户信息受影响记录数为[{}]",i);
                 result = false;
             }
         } catch (SQLException e) {
-            LOGGER.error("插入学生成绩信息到数据库失败",e);
+            LOGGER.error("service插入学生成绩信息到数据库失败",e);
         }
-        LOGGER.info("插入学生成绩信息到数据库结束.返回参数{}...",result);
+        LOGGER.info("service插入学生成绩信息到数据库结束.返回参数{}...",result);
         return result;
     }
 
@@ -55,22 +55,22 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
      */
     @Override
     public boolean delExamInfo(int studentId) {
-        LOGGER.info("删除学生成绩信息开始...");
+        LOGGER.info("service删除学生成绩信息开始...");
         boolean result = true;
         String sql = "delete from student_exam_info where studentId=%1s";
         String sql_format = String.format(sql,studentId);
-        LOGGER.info("删除学生成绩信息sql:{}",sql_format);
+        LOGGER.info("service删除学生成绩信息sql:{}",sql_format);
         try {
             ps = conn.prepareStatement(sql_format);
             int i =  ps.executeUpdate();
             if (i!=1){
-                LOGGER.warn("删除学生成绩信息受影响记录数为[{}]",i);
+                LOGGER.warn("service删除学生成绩信息受影响记录数为[{}]",i);
                 result = false;
             }
         } catch (SQLException e) {
-            LOGGER.error("从数据库中删除学生成绩信息失败",e);
+            LOGGER.error("service从数据库中删除学生成绩信息失败",e);
         }
-        LOGGER.info("删除学生成绩信息结束.返回参{}...",result);
+        LOGGER.info("service删除学生成绩信息结束.返回参{}...",result);
         return result;
     }
 
@@ -79,23 +79,23 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
      */
     @Override
     public boolean updateExamInfo(StudentExamInfo sei) {
-        LOGGER.info("修改学生成绩信息开始...");
+        LOGGER.info("service修改学生成绩信息开始...");
         boolean result = true;
         String sql = "update student_exam_info set studentName='%1s',studentClass='%2s',studentScore=%3s,subjectsName='%4s' where studentId='%5s'";
         String sql_format = String.format(sql,sei.getStudentName(),sei.getStudentClass(),sei.getStudentScore(),sei.getSubjectsName(),sei.getStudentId());
-        LOGGER.info("修改学生成绩信息sql:{}",sql_format);
+        LOGGER.info("service修改学生成绩信息sql:{}",sql_format);
         try {
             ps = conn.prepareStatement(sql_format);
             int i = ps.executeUpdate();
             if (i!=1){
-                LOGGER.warn("修改用户信息受影响记录数为[{}]",i);
+                LOGGER.warn("service修改用户信息受影响记录数为[{}]",i);
                 result = false;
             }
         } catch (SQLException e) {
-            LOGGER.error("修改学生成绩信息失败",e);
+            LOGGER.error("service修改学生成绩信息失败",e);
             return result;
         }
-        LOGGER.info("修改学生成绩信息结束.返回参{}...",result);
+        LOGGER.info("service修改学生成绩信息结束.返回参{}...",result);
         return result;
     }
 
@@ -104,15 +104,15 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
      */
     @Override
     public StudentExamInfo queryById(int studentId) {
-        LOGGER.info("查询学生成绩信息开始...");
+        LOGGER.info("service查询学生成绩信息开始...");
         StudentExamInfo sei = null;
         String sql = "select * from student_exam_info where studentId=%1s";
         String sql_format = String.format(sql, studentId);
-        LOGGER.info("查询学生成绩信息sql:{}",sql_format);
+        LOGGER.info("service查询学生成绩信息sql:{}",sql_format);
         try {
             ps = conn.prepareStatement(sql_format);
             rs = ps.executeQuery();
-            if(rs != null){
+            while(rs.next()){
                 sei = new StudentExamInfo();
                 sei.setStudentId(rs.getInt("studentId"));
                 sei.setStudentName(rs.getString("studentName"));
@@ -121,9 +121,9 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
                 sei.setSubjectsName(rs.getString("subjectsName"));
             }
         } catch (SQLException e) {
-            LOGGER.error("查询学生成绩信息失败",e);
+            LOGGER.error("service查询学生成绩信息失败",e);
         }
-    //    LOGGER.info("查询学生成绩信息结束.返回参{}...", sei.toString());
+        LOGGER.info("service查询学生成绩信息开始...");
         return sei;
     }
 
@@ -137,7 +137,7 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
         int startRow = pageSize*(pageNumber-1);
         String sql = "select * from student_exam_info limit %1s,%2s";
         String sql_format = String.format(sql,startRow,pageSize);
-        LOGGER.info("查询学生成绩信息列表sql:{}",sql_format);
+        LOGGER.info("service查询学生成绩信息列表sql:{}",sql_format);
         try {
             ps = conn.prepareStatement(sql_format);
             rs = ps.executeQuery();
@@ -154,9 +154,9 @@ public class StudentExamInfoDaoImpl implements StudentExamInfoDao{
                 }
                 }
         } catch (SQLException e) {
-            LOGGER.error("查询学生成绩信息列表失败",e);
+            LOGGER.error("service查询学生成绩信息列表失败",e);
         }
-        LOGGER.info("从数据库查询到的学生列表信息：{}",list);
+        LOGGER.info("service从数据库查询到的学生列表信息：{}",list);
         return list;
     }
 }

@@ -16,6 +16,7 @@
     <div>
       <a href="views/addPage.jsp">新增</a>
       <a href="views/delPage.jsp">删除</a>
+      <a href="views/updatePage.jsp">修改</a>
     </div>
     <hr style="height: 2px;">
     <div>

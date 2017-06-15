@@ -11,6 +11,8 @@ public class ErrConstants {
      * 系统错误
      */
     public static final RetCode DEL_STUDENT_EXAM_INFO_FAIL = new RetCode(1001,"删除学生成绩信息失败！");
+    public static final RetCode QUERY_STUDENT_EXAM_INFO_FAIL = new RetCode(1002,"查询学生成绩信息失败！");
+    public static final RetCode UPDATE_STUDENT_EXAM_INFO_FAIL = new RetCode(1003,"修改学生成绩信息失败！");
 
 
     /***
