@@ -16,7 +16,7 @@
 </div>
 <hr style="height: 2px;">
 <div>
-    <form action="../StudentExamInfoManage.do" method="get">
+    <form action="/daoStudy/StudentExamInfoManage.do" method="get">
         <table border="1">
             <tr>
                 <td>学生姓名</td>
